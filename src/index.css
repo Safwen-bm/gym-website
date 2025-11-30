@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Condensed:wght@700&family=Orbitron:wght@700;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ====================== BASE ====================== */
+@layer base {
+  body {
+    @apply bg-black text-white overflow-x-hidden;
+    font-family: 'Orbitron', 'Roboto Condensed', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-['Orbitron'] tracking-tighter leading-none font-black;
+  }
+}
+
+/* ====================== COMPONENTS ====================== */
+@layer components {
+  /* HERO BLOOD OVERLAY */
+  .hero-overlay {
+    position: relative;
+  }
+  .hero-overlay::before {
+    content: "";
+    @apply absolute inset-0 -z-10;
+    background: radial-gradient(circle at center, rgba(220,20,60,0.5) 0%, rgba(0,0,0,0.95) 80%);
+  }
+
+  /* EPIC BUTTON */
+  .btn-fire {
+    @apply relative inline-block bg-gradient-to-r from-red-700 to-red-900 text-white font-bold text-2xl md:text-3xl lg:text-4xl px-16 py-7 uppercase tracking-widest border-4 border-red-800 overflow-hidden transition-all duration-300 shadow-2xl hover:shadow-red-600/80 hover:scale-105;
+  }
+  .btn-fire::before {
+    content: "";
+    @apply absolute inset-0 bg-white opacity-0 hover:opacity-20 transition-opacity duration-500;
+  }
+  .btn-fire span {
+    @apply relative z-10;
+  }
+
+  /* TITLES FROM HELL — NEON PREMIUM */
+  .title-fire {
+    @apply block text-7xl md:text-9xl font-black;
+    background: linear-gradient(90deg, #ff0000, #ff4500, #ffa500, #ff0000);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff4500, 0 0 40px #ffa500;
+    animation: gradient-text 6s ease infinite;
+  }
+  @media (min-width: 1024px) {
+    .title-fire {
+      font-size: 12rem;
+      line-height: 0.82;
+    }
+  }
+
+  /* FEATURE CARD — NEW PREMIUM HOVER (rounded-3xl + stronger glow) */
+  .card-hell {
+    @apply relative overflow-hidden rounded-3xl bg-gradient-to-br from-zinc-900 via-black to-zinc-900 border-2 border-red-900/50 transition-all duration-500 hover:border-red-600 hover:shadow-2xl hover:shadow-red-700/60 hover:-translate-y-8;
+  }
+  .card-hell::before {
+    content: "";
+    @apply absolute inset-0 bg-gradient-to-t from-red-950/70 to-transparent opacity-0 transition-opacity duration-700 rounded-3xl;
+  }
+  .card-hell:hover::before {
+    @apply opacity-100;
+  }
+
+  /* INPUTS */
+  .input-hell {
+    @apply w-full bg-black/50 border-2 border-red-900/70 text-white text-xl px-6 py-5 placeholder-gray-500 focus:border-red-500 focus:outline-none transition-all duration-300 backdrop-blur-sm rounded-lg;
+  }
+}
+
+/* ====================== GROUP HOVER FIX ====================== */
+.group:hover .group-hover\:scale-110 { transform: scale(1.1); }
+.group:hover .group-hover\:opacity-100 { opacity: 1; }
+
+/* ====================== ANIMATIONS — FINAL PREMIUM VERSION ====================== */
+
+/* Pulsing blobs / badges — stronger */
+@keyframes pulse-slow {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50%      { transform: scale(1.1); opacity: 0.4; }
+}
+.animate-pulse-slow { animation: pulse-slow 6s ease-in-out infinite; }
+
+/* Floating sparks — faster & stronger */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.5; }
+  50%      { transform: translateY(-12px) scale(1.2); opacity: 0.7; }
+}
+.animate-float-slow { animation: float-slow 5s ease-in-out infinite; }
+
+/* Gradient text animation */
+@keyframes gradient-text {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+.animate-gradient-text {
+  background-size: 200% 200%;
+  animation: gradient-text 5s ease infinite;
+}
+
+/* Hero fade-in */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fade-in 0.9s ease forwards; }
+
+/* NAV LINK UNDERLINE */
+nav ul li a {
+  @apply relative;
+}
+nav ul li a::after {
+  content: "";
+  @apply absolute left-0 -bottom-1 h-0.5 w-0 bg-red-600 transition-all duration-300;
+}
+nav ul li a:hover::after {
+  @apply w-full;
+}
+
+/* GLOW ON HOVER — buttons + logo */
+.btn-fire:hover,
+.logo-img:hover {
+  filter: drop-shadow(0 0 30px rgba(255, 0, 0, 0.9));
+}
+
+/* EXTRA STRONG DROP SHADOW */
+.drop-shadow-3xl {
+  filter: drop-shadow(0 25px 25px rgba(220, 20, 60, 0.7));
+}
