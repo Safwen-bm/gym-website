@@ -1,105 +1,49 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-scroll";
+import Logo from "./Logo";
 
-function Navbar() {
+const items = [["Home", "home"], ["Programs", "programs"], ["About", "about"], ["Pricing", "pricing"], ["Contact", "contact"]];
+
+export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const on = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", on);
+    return () => window.removeEventListener("scroll", on);
   }, []);
 
-  const navItems = ["Home", "Features", "Offer", "About", "Contact"];
-
   return (
-    <>
-      <nav
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-          scrolled
-            ? "h-16 md:h-20 bg-black/90 backdrop-blur-xl border-b border-red-900/40 shadow-2xl shadow-red-900/20"
-            : "h-20 md:h-24 bg-transparent"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto flex justify-between items-center h-full px-6 md:px-10">
-          {/* LOGO */}
-          <Link to="main" smooth className="cursor-pointer">
-            <img
-              src="/logo.png"
-              alt="logo"
-              className="h-12 md:h-16 transition-all duration-500 hover:scale-110 logo-img"
-            />
-          </Link>
+    <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled || open ? "bg-ink/90 backdrop-blur-md border-b border-white/10" : ""}`}>
+      <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+        <Link to="home" smooth className="cursor-pointer" aria-label="Redline home"><Logo /></Link>
 
-          {/* DESKTOP MENU — SLIM & DEADLY */}
-          <ul className="hidden lg:flex items-center gap-10 xl:gap-12 text-sm xl:text-base uppercase tracking-widest font-bold">
-            {navItems.map((item) => (
-              <li key={item}>
-                <Link
-                  to={item.toLowerCase() === "home" ? "main" : item.toLowerCase()}
-                  smooth
-                  spy
-                  offset={-80}
-                  className="relative py-2 text-gray-300 hover:text-red-500 transition-all duration-300"
-                  activeClass="text-red-500"
-                >
-                  {item}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-red-500 transition-all duration-400 hover:w-full active:w-full"></span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+        <ul className="hidden items-center gap-9 lg:flex">
+          {items.map(([label, id]) => (
+            <li key={id}>
+              <Link to={id} smooth spy offset={-80} activeClass="!text-red" className="cursor-pointer font-medium text-white/70 transition hover:text-white">{label}</Link>
+            </li>
+          ))}
+          <li><Link to="cta" smooth offset={-80} className="btn cursor-pointer !px-6 !py-2.5 !text-lg">Free week</Link></li>
+        </ul>
 
-          {/* MOBILE HAMBURGER — PURE EVIL */}
-          <button
-            onClick={() => setMobileOpen(true)}
-            className="lg:hidden relative w-10 h-10 flex flex-col justify-center items-center gap-1.5 group"
-          >
-            <span className="block w-8 h-0.5 bg-red-600 transition-all duration-500 group-hover:bg-red-400"></span>
-            <span className="block w-8 h-0.5 bg-red-600 transition-all duration-500"></span>
-            <span className="block w-8 h-0.5 bg-red-600 transition-all duration-500 group-hover:bg-red-400"></span>
-          </button>
-        </div>
+        <button onClick={() => setOpen(!open)} className="flex h-10 w-10 flex-col items-end justify-center gap-1.5 lg:hidden" aria-label="Toggle menu" aria-expanded={open}>
+          <span className={`h-0.5 w-8 bg-red transition ${open ? "translate-y-2 rotate-45" : ""}`} />
+          <span className={`h-0.5 bg-red transition-all ${open ? "w-0" : "w-5"}`} />
+          <span className={`h-0.5 w-8 bg-red transition ${open ? "-translate-y-2 -rotate-45" : ""}`} />
+        </button>
       </nav>
 
-      {/* MOBILE MENU — FULL-SCREEN DEMON MODE */}
-      <div
-        className={`fixed inset-0 bg-black/98 backdrop-blur-2xl z-50 transition-opacity duration-700 flex items-center justify-center ${
-          mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
-      >
-        <button
-          onClick={() => setMobileOpen(false)}
-          className="absolute top-8 right-8 text-5xl font-bold text-red-600 hover:text-red-400 transition"
-        >
-          ×
-        </button>
-
-        <ul className="space-y-10 text-center">
-          {navItems.map((item, i) => (
-            <li
-              key={item}
-              className="opacity-0 animate-fade-in"
-              style={{ animationDelay: `${i * 100}ms`, animationFillMode: "forwards" }}
-            >
-              <Link
-                to={item.toLowerCase() === "home" ? "main" : item.toLowerCase()}
-                smooth
-                spy
-                offset={-80}
-                onClick={() => setMobileOpen(false)}
-                className="text-5xl md:text-7xl font-black tracking-wider text-gray-400 hover:text-red-500 transition-all duration-500 hover:scale-110 block"
-                activeClass="text-red-500"
-              >
-                {item}
-              </Link>
+      {open && (
+        <ul className="flex flex-col gap-1 px-6 pb-8 lg:hidden">
+          {[...items, ["Free week", "cta"]].map(([label, id]) => (
+            <li key={id}>
+              <Link to={id} smooth offset={-80} onClick={() => setOpen(false)} className="block border-b border-white/10 py-3 font-display text-4xl font-black uppercase">{label}</Link>
             </li>
           ))}
         </ul>
-      </div>
-    </>
+      )}
+    </header>
   );
 }
-
-export default Navbar;

@@ -1,26 +1,27 @@
 import Navbar from "./components/Navbar";
-import Header from "./components/Header";
-import Features from "./components/Features";
-import Offer from "./components/Offer";
+import Hero from "./components/Hero";
+import Marquee from "./components/Marquee";
+import Programs from "./components/Programs";
 import About from "./components/About";
+import Pricing from "./components/Pricing";
+import CTA from "./components/CTA";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import Pricing from "./components/Pricing";
 
-function App() {
-
+export default function App() {
   return (
-    <div className="App">
+    <>
       <Navbar />
-      <Header />
-      <Features />
-      <Offer />
-      <About />
-      <Pricing />
-      <Contact />
+      <main>
+        <Hero />
+        <Marquee />
+        <Programs />
+        <About />
+        <Pricing />
+        <CTA />
+        <Contact />
+      </main>
       <Footer />
-    </div>
+    </>
   );
-};
-
-export default App;
+}

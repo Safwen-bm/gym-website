@@ -1,29 +1,38 @@
-function Pricing() {
-  const plans = [
-    { name: "Basic", price: "$50", features: ["Access to Gym", "1 Trainer Session/week"] },
-    { name: "Pro", price: "$90", features: ["Access to Gym", "3 Trainer Sessions/week", "Nutrition Plan"] },
-    { name: "Elite", price: "$150", features: ["Unlimited Gym Access", "Daily Trainer Sessions", "Nutrition Plan", "Online Support"] },
-  ];
+import { Link } from "react-scroll";
+import Reveal from "./Reveal";
 
+const plans = [
+  { name: "Base", price: 50, note: "For lifters who know the plan", features: ["24/7 gym access", "1 coached session a week", "Mobility classes"] },
+  { name: "Pro", price: 90, note: "Most members pick this", featured: true, features: ["Everything in Base", "3 coached sessions a week", "Nutrition plan", "Sauna and cold plunge"] },
+  { name: "Elite", price: 150, note: "Maximum support", features: ["Everything in Pro", "Daily coaching", "Monthly body scan", "Priority booking", "Online coach chat"] },
+];
+
+export default function Pricing() {
   return (
-    <section id="pricing" className="relative py-32 bg-black overflow-hidden">
-      <h2 className="title-fire text-center mb-20 text-6xl md:text-7xl animate-gradient-text">CHOOSE YOUR PLAN</h2>
-      <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-12 px-8">
-        {plans.map((p, i) => (
-          <div key={i} className="card-hell p-8 rounded-3xl hover:scale-105 transition-all duration-500 shadow-2xl">
-            <h3 className="text-4xl font-black text-red-600 text-center mb-4">{p.name}</h3>
-            <p className="text-gray-300 text-3xl text-center mb-6">{p.price}</p>
-            <ul className="text-gray-400 space-y-2 mb-6">
-              {p.features.map((f, idx) => (
-                <li key={idx} className="text-lg">{f}</li>
-              ))}
-            </ul>
-            <button className="btn-fire w-full py-4 text-2xl">Join Now</button>
-          </div>
-        ))}
+    <section id="pricing" className="bg-white/[0.03] py-28">
+      <div className="mx-auto max-w-7xl px-6">
+        <Reveal>
+          <h2 className="text-6xl md:text-8xl">Pick your plan</h2>
+          <p className="mt-4 text-xl text-white/60">Month to month. Cancel any time. First week free on every plan.</p>
+        </Reveal>
+        <div className="mt-14 grid gap-6 md:grid-cols-3 md:items-end">
+          {plans.map((p, i) => (
+            <Reveal key={p.name} delay={i * 100}>
+              <div className={`flex flex-col p-8 ${p.featured ? "bg-red text-white md:pb-14 md:pt-12" : "border border-white/15"}`}>
+                <h3 className="text-5xl">{p.name}</h3>
+                <p className={p.featured ? "text-white/90" : "text-white/55"}>{p.note}</p>
+                <p className="mt-6 font-display text-7xl font-black">${p.price}<span className="text-2xl font-bold opacity-70"> / month</span></p>
+                <ul className="mt-6 flex-1 space-y-3 text-lg">
+                  {p.features.map((f) => (
+                    <li key={f} className="flex gap-3"><span className={p.featured ? "text-ink" : "text-red"}>&#10003;</span>{f}</li>
+                  ))}
+                </ul>
+                <Link to="contact" smooth offset={-80} className={`btn mt-8 cursor-pointer ${p.featured ? "btn-light" : ""}`}>Join {p.name}</Link>
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );
 }
-
-export default Pricing;
